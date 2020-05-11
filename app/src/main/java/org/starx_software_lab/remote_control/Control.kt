@@ -1,10 +1,12 @@
 package org.starx_software_lab.remote_control
 
 
+import android.util.Log
 import android.view.KeyEvent
 import java.io.DataOutputStream
 
 class Control {
+    val tag = "Control"
     val cmd = "input keyevent "
     val shutdown = "am start -a com.android.internal.intent.action.REQUEST_SHUTDOWN"
     val reboot = "am start -a android.intent.action.REBOOT"
@@ -12,6 +14,7 @@ class Control {
     val ops = DataOutputStream(su.outputStream)
 
     fun performAction(action : String) {
+        Log.i(tag,action)
         when (action) {
             "up" -> opsWrite(mixCMD(KeyEvent.KEYCODE_DPAD_UP))
             "down" -> opsWrite(mixCMD(KeyEvent.KEYCODE_DPAD_DOWN))
@@ -20,6 +23,7 @@ class Control {
             "enter" -> opsWrite(mixCMD(KeyEvent.KEYCODE_ENTER))
             "back" -> opsWrite(mixCMD(KeyEvent.KEYCODE_BACK))
             "menu" -> opsWrite(mixCMD(KeyEvent.KEYCODE_MENU))
+            "home" -> opsWrite(mixCMD(KeyEvent.KEYCODE_HOME))
         }
     }
 
@@ -39,7 +43,7 @@ class Control {
     }
 
     private fun opsWrite(cmd: String) {
-        this.ops.writeBytes(cmd)
+        this.ops.writeBytes(cmd + "\n")
         this.ops.flush()
     }
 

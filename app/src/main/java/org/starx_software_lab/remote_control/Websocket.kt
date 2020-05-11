@@ -1,16 +1,15 @@
 package org.starx_software_lab.remote_control
 
-import android.content.ContentResolver
-import android.provider.Settings
+
 import android.util.Log
 import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
 import org.java_websocket.server.WebSocketServer
-import java.lang.Exception
 import java.net.InetSocketAddress
 
 
 class Websocket(p: Int) : WebSocketServer(InetSocketAddress(p)) {
+    //Main
     val tag = "Websocket"
     var id = ""
     var control = Control()
@@ -20,17 +19,16 @@ class Websocket(p: Int) : WebSocketServer(InetSocketAddress(p)) {
     }
 
     override fun onOpen(conn: WebSocket?, handshake: ClientHandshake?) {
-        broadcast("New Connection: " + handshake?.resourceDescriptor)
+        Log.i(tag,"Websocket started at Port:" + this.port)
         conn?.send("Welcome: connected to the backend")
         conn?.send(this.id)
-        conn?.send(conn.remoteSocketAddress.address.hostAddress)
-        conn?.send("RFRM.")
+        broadcast("IP: " + conn?.remoteSocketAddress?.address?.hostAddress + " has connected to the backend")
+        conn?.send("RFRM")
     }
 
     override fun onClose(conn: WebSocket?, code: Int, reason: String?, remote: Boolean) {
         val remote_addr = conn?.remoteSocketAddress?.address?.hostAddress
         broadcast("Connection Closed: IP $remote_addr Reason $reason")
-        conn?.send("Bye!")
     }
 
     override fun onMessage(conn: WebSocket?, message: String?) {
@@ -38,14 +36,27 @@ class Websocket(p: Int) : WebSocketServer(InetSocketAddress(p)) {
         if (!message.isNullOrEmpty()) {
                 if (message.startsWith(this.id)) {
                     val msg = message.split(",")[1]
-                    if (!msg.equals("exit")) {
-                        control.performAction(msg)
-                    } else {
-                        control.exit()
+                    Log.i(tag,message)
+                    when (msg) {
+                        "exit" -> {
+                            control.exit()
+                            this.stop()
+                            Log.i(tag,"Websocket Exited")
+                        }
+                        "reboot" -> {
+                            control.reboot()
+                        }
+                        "shutdown" -> {
+                            control.shutdown()
+                        }
+                        else -> {
+                            control.performAction(msg)
+                        }
                     }
 
                 } else {
-                    conn?.send("WRONG ID FOUND!")
+                    Log.e(tag,"ID NOT FOUND!")
+                    conn?.send("ID NOT FOUND!")
                 }
             }
     }
@@ -55,7 +66,7 @@ class Websocket(p: Int) : WebSocketServer(InetSocketAddress(p)) {
     }
 
     override fun onError(conn: WebSocket?, ex: Exception?) {
-        Log.e(tag,"Websocket " + conn?.resourceDescriptor.toString() + " Error:\n" + ex?.printStackTrace())
+        Log.e(tag, ex?.printStackTrace().toString())
     }
 
 }

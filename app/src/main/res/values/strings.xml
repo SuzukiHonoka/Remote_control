@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Remote_Control</string>
+    <string name="remote_control">远程控制</string>
+    <string name="descri">此区块集成了受控端及控制端。</string>
+    <string name="warn">仅支持受控端支持超级用户的设备上使用。</string>
+    <string name="server">受控端</string>
+    <string name="client">控制端</string>
+    <string name="server_ip">受控端IP</string>
+    <string name="edit_tip1">请输入受控端的IP</string>
+    <string name="server_port">受控端端口</string>
+    <string name="edit_tip2">请输入受控端的端口</string>
+    <string name="remote_ctrl">此区块可控制受控端.</string>
+    <string name="warn2">请勿用于非法用途</string>
+    <string name="try_connect">尝试连接</string>
+    <string name="connect">连接</string>
 </resources>

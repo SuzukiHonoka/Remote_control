@@ -24,6 +24,10 @@ class Control {
             "back" -> opsWrite(mixCMD(KeyEvent.KEYCODE_BACK))
             "menu" -> opsWrite(mixCMD(KeyEvent.KEYCODE_MENU))
             "home" -> opsWrite(mixCMD(KeyEvent.KEYCODE_HOME))
+            "vol+" -> opsWrite(mixCMD(KeyEvent.KEYCODE_VOLUME_UP))
+            "vol-" -> opsWrite(mixCMD(KeyEvent.KEYCODE_VOLUME_DOWN))
+            "mute" -> opsWrite(mixCMD(KeyEvent.KEYCODE_VOLUME_MUTE))
+            "power" -> opsWrite(mixCMD(KeyEvent.KEYCODE_POWER))
         }
     }
 

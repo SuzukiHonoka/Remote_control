@@ -23,7 +23,7 @@ class Websocket(p: Int) : WebSocketServer(InetSocketAddress(p)) {
         conn?.send("Welcome: connected to the backend")
         conn?.send(this.id)
         broadcast("IP: " + conn?.remoteSocketAddress?.address?.hostAddress + " has connected to the backend")
-        conn?.send("RFRM")
+        conn?.send("Ready for receive cli commands.")
     }
 
     override fun onClose(conn: WebSocket?, code: Int, reason: String?, remote: Boolean) {

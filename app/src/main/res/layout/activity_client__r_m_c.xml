@@ -189,15 +189,17 @@
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/back"
+                        android:onClick="onClick"
+                        android:id="@+id/power"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="BACK"
+                        android:text="POWER"
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:id="@+id/poweroff"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -207,6 +209,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:id="@+id/reboot"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -222,6 +225,7 @@
                     android:layout_marginTop="5dp">
 
                     <Button
+                        android:onClick="onClick"
                         android:id="@+id/up"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -231,6 +235,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:id="@+id/enter"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -241,6 +246,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:id="@+id/down"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -251,6 +257,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:id="@+id/left"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -261,6 +268,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:id="@+id/right"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -271,6 +279,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:layout_toStartOf="@id/up"
                         android:id="@+id/home"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
@@ -280,6 +289,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:onClick="onClick"
                         android:layout_toEndOf="@id/up"
                         android:id="@+id/menu"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
@@ -289,7 +299,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
-
+                        android:onClick="onClick"
                         android:id="@+id/volup"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
@@ -297,6 +307,16 @@
                         android:text="VOL+"
                         android:textColor="@color/shojo" />
                     <Button
+                        android:layout_below="@id/volup"
+                        android:onClick="onClick"
+                        android:id="@+id/mute"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MUTE"
+                        android:textColor="@color/shojo" />
+                    <Button
+                        android:onClick="onClick"
                         android:layout_alignParentStart="true"
                         android:layout_below="@id/left"
                         android:id="@+id/volmi"
@@ -305,7 +325,16 @@
                         android:layout_height="wrap_content"
                         android:text="VOL-"
                         android:textColor="@color/shojo" />
-
+                    <Button
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/right"
+                        android:onClick="onClick"
+                        android:id="@+id/back"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BACK"
+                        android:textColor="@color/shojo" />
                 </RelativeLayout>
 
 
@@ -346,8 +375,7 @@
                     <TextView
                         android:id="@+id/logs"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="当前日志为空"
+                        android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#2196F3" />
                 </ScrollView>

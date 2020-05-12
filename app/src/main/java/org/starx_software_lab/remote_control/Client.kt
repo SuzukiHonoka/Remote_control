@@ -48,6 +48,7 @@ class Client(s: String): WebSocketClient(URI(s)) {
         rec_count += 1
         if (rec_count == 2) {
             this.id = message.toString()
+            sendtoUI(connect_id,this.id)
         }
         Log.i(tag,message.toString())
         sendtoUI(connect_msg,message)
@@ -56,4 +57,7 @@ class Client(s: String): WebSocketClient(URI(s)) {
     override fun onError(ex: Exception?) {
         sendtoUI(connect_fail,ex?.printStackTrace().toString())
     }
+
+
+
 }

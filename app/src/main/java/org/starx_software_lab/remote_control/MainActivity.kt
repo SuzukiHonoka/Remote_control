@@ -16,17 +16,17 @@ class MainActivity : AppCompatActivity() {
         server.setOnClickListener {
             if (status == 0) {
                 status = 1
-                applicationContext.startService(Intent(applicationContext, WSCTRL::class.java))
+                startService(Intent(this, WSCTRL::class.java))
                 Toast.makeText(this,"受控服务已启动于端口1060。",Toast.LENGTH_SHORT).show()
             } else {
                 status = 0
-                applicationContext.stopService(Intent(applicationContext, WSCTRL::class.java))
+                stopService(Intent(this, WSCTRL::class.java))
                 Toast.makeText(this,"受控服务已关闭。",Toast.LENGTH_SHORT).show()
             }
 
         }
         client.setOnClickListener {
-            startActivity(Intent(applicationContext,Client_RMC::class.java))
+            startActivity(Intent(this,Client_RMC::class.java))
         }
     }
 }

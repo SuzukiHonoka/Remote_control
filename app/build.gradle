@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "org.starx_software_lab.remote_control"
-        minSdkVersion 28
+        minSdkVersion 25
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -18,7 +18,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

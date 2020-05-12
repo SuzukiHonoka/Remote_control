@@ -19,7 +19,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".WSCTRL" />
+        <service
+            android:name=".WSCTRL"
+            android:enabled="true"></service>
     </application>
 
 </manifest>

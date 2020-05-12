@@ -145,6 +145,57 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="连接方式"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/usews"
+                        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="Websocket"
+                        android:textColor="@color/shojo" />
+
+                    <CheckBox
+                        android:id="@+id/useadb"
+                        style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ADB"
+                        android:textColor="@color/shojo" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0"
+            app:cardElevation="5dp"
+            app:contentPadding="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/try_connect"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold" />
@@ -187,7 +238,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <Button
                         android:onClick="onClick"
                         android:id="@+id/power"
@@ -218,6 +268,32 @@
                         android:text="REBOOT"
                         android:textColor="@color/shojo" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/home"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="HOME"
+                        android:textColor="@color/shojo" />
+
+                    <Button
+                        android:id="@+id/menu"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="MENU"
+                        android:textColor="@color/shojo" />
+                </LinearLayout>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -257,6 +333,7 @@
                         android:textColor="@color/shojo" />
 
                     <Button
+                        android:layout_toRightOf="@id/mute"
                         android:onClick="onClick"
                         android:id="@+id/left"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
@@ -279,53 +356,6 @@
                         android:textColor="@color/shojo" />
 
                     <Button
-                        android:onClick="onClick"
-                        android:layout_toStartOf="@id/up"
-                        android:id="@+id/home"
-                        style="@android:style/Widget.Material.Light.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="HOME"
-                        android:textColor="@color/shojo" />
-
-                    <Button
-                        android:onClick="onClick"
-                        android:layout_toEndOf="@id/up"
-                        android:id="@+id/menu"
-                        style="@android:style/Widget.Material.Light.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MENU"
-                        android:textColor="@color/shojo" />
-
-                    <Button
-                        android:onClick="onClick"
-                        android:id="@+id/volup"
-                        style="@android:style/Widget.Material.Light.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VOL+"
-                        android:textColor="@color/shojo" />
-                    <Button
-                        android:layout_below="@id/volup"
-                        android:onClick="onClick"
-                        android:id="@+id/mute"
-                        style="@android:style/Widget.Material.Light.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MUTE"
-                        android:textColor="@color/shojo" />
-                    <Button
-                        android:onClick="onClick"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@id/left"
-                        android:id="@+id/volmi"
-                        style="@android:style/Widget.Material.Light.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VOL-"
-                        android:textColor="@color/shojo" />
-                    <Button
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/right"
                         android:onClick="onClick"
@@ -337,7 +367,40 @@
                         android:textColor="@color/shojo" />
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <Button
+                        android:id="@+id/volup"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="VOL+"
+                        android:textColor="@color/shojo" />
+
+                    <Button
+                        android:id="@+id/mute"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="MUTE"
+                        android:textColor="@color/shojo" />
+
+                    <Button
+                        android:id="@+id/volmi"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="VOL-"
+                        android:textColor="@color/shojo" />
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

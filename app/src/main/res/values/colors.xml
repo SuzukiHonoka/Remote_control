@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#FB7299</color>
+    <color name="colorPrimaryDark">#FB7299</color>
+    <color name="colorAccent">#FB7299</color>
     <color name="red">#ff0008</color>
     <color name="green">#00FF77</color>
     <color name="shojo">#FB7299</color>

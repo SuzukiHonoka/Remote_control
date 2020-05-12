@@ -2,9 +2,9 @@ package org.starx_software_lab.remote_control
 
 import android.annotation.SuppressLint
 import android.app.IntentService
+import android.app.Service
 import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 
@@ -23,6 +23,14 @@ class WSCTRL() : IntentService("WSCTRL") {
             //60*60*24*30 = 30 days
             Thread.sleep(2592000)
         }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return super.onStartCommand(intent, flags, startId)
+        }
+        return Service.START_STICKY
+
     }
     override fun onDestroy() {
         Log.i("Destroy","Destroy")

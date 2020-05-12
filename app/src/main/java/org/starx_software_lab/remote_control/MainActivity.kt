@@ -1,6 +1,7 @@
 package org.starx_software_lab.remote_control
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,9 @@ class MainActivity : AppCompatActivity() {
         server.setOnClickListener {
             if (status == 0) {
                 status = 1
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(Intent(this, WSCTRL::class.java))
+                }
                 startService(Intent(this, WSCTRL::class.java))
                 Toast.makeText(this,"受控服务已启动于端口1060。",Toast.LENGTH_SHORT).show()
             } else {

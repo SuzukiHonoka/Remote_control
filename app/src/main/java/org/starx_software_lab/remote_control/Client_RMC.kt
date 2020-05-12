@@ -22,6 +22,7 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
     //
     var status = 0
     var allow = false
+    var way = 1
     //
     lateinit var client_rd: Client
     lateinit var id: String
@@ -58,28 +59,52 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client__r_m_c)
+        usews.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                useadb.isChecked = false
+                way = 1
+            }
+        }
+        useadb.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                usews.isChecked = false
+                way = 2
+            }
+        }
     }
 
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.client_connect -> {
                 if (status == 0) {
-                    status = 1
-                    client_connect.text = "断开"
-                    val ip = server_ip.text
-                    val port = server_port.text
-                    if (!ip.isNullOrEmpty() and !port.isNullOrEmpty()) {
-                        val uri = "ws://" + ip + ":" + port
-                        client_rd = Client(uri)
-                        client_rd.setHandler(mhandler)
-                        client_rd.connect()
+                    val ip = server_ip.text.toString().trim()
+                    val port = server_port.text.toString().trim()
+                    if (ip.isNotEmpty() and port.isNotEmpty()) {
+                        if (way == 1) {
+                            status = 1
+                            client_connect.text = "断开"
+                            val uri = "ws://$ip:$port"
+                            client_rd = Client(uri)
+                            client_rd.setHandler(mhandler)
+                            client_rd.connect()
+                        } else {
+//                            val adb = Adb()
+//                            adb.setup(applicationContext,filesDir.toString(),ip,port)
+//                            adb.start()
+                            Toast.makeText(this, "Under developing..", Toast.LENGTH_SHORT).show()
+                            usews.isChecked = true
+                        }
+
                     }
                 } else {
                     client_connect.text = resources.getString(R.string.connect)
                     editable(server_ip,true)
                     editable(server_port,true)
                     status = 0
-                    client_rd.close()
+                    if (way == 1) {
+                        client_rd.close()
+                    }
+
                 }
             }
             R.id.back -> {

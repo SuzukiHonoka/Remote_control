@@ -333,7 +333,6 @@
                         android:textColor="@color/shojo" />
 
                     <Button
-                        android:layout_toRightOf="@id/mute"
                         android:onClick="onClick"
                         android:id="@+id/left"
                         style="@android:style/Widget.Material.Light.Button.Borderless"

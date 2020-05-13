@@ -1,10 +1,10 @@
 package org.starx_software_lab.remote_control
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -14,42 +14,52 @@ import kotlinx.android.synthetic.main.activity_client__r_m_c.*
 class Client_RMC : AppCompatActivity(),View.OnClickListener {
     val tag = "Client"
     //
-    val connect_fail = 0
-    val connect_success = 1
-    val connect_msg = 2
-    val connect_close = 3
-    val connect_id = 4
-    //
     var status = 0
     var allow = false
     var way = 1
     //
     lateinit var client_rd: Client
     lateinit var id: String
+    lateinit var adbd: ADB
     //
     private val mhandler =
         object : Handler(Looper.getMainLooper()){
             override fun handleMessage(msg: Message) {
                 when(msg.what) {
-                    connect_fail -> runOnUiThread {
+                    Util().connect_fail -> runOnUiThread {
                         Toast.makeText(applicationContext,"连接失败。",Toast.LENGTH_SHORT).show()
                         client_connect.text = resources.getString(R.string.connect)
                         editable(server_ip,true)
                         editable(server_port,true)
                         status = 0
                     }
-                    connect_success -> runOnUiThread { Toast.makeText(applicationContext,"连接成功。",Toast.LENGTH_SHORT).show() }
-                    connect_close -> runOnUiThread { Toast.makeText(applicationContext,"连接关闭。",Toast.LENGTH_SHORT).show()
+                    Util().connect_success -> runOnUiThread { popup(applicationContext, "连接成功。") }
+                    Util().connect_close -> runOnUiThread {
+                        popup(applicationContext, "连接关闭。")
                         client_connect.text = resources.getString(R.string.connect)
                         editable(server_ip,true)
                         editable(server_port,true)
                         status = 0
                     }
-                    connect_msg -> runOnUiThread { logs.append("\n"+msg.obj.toString()) }
-                    connect_id -> runOnUiThread{
+                    Util().connect_msg -> runOnUiThread { logs.append("\n" + msg.obj.toString()) }
+                    Util().connect_id -> {
                         allow = true
                         id = msg.obj.toString()
-                        Toast.makeText(applicationContext,"已获取到ID。",Toast.LENGTH_SHORT).show()
+                        runOnUiThread {
+                            popup(applicationContext, "已获取到ID。")
+                        }
+                    }
+                    Util().connect_adb_msg -> runOnUiThread {
+                        logs.append(msg.obj.toString())
+                    }
+                    Util().connect_adb_closed -> runOnUiThread {
+                        popup(applicationContext, "连接已关闭。")
+                    }
+                    Util().connect_adb_ok -> {
+                        allow = true
+                        runOnUiThread {
+                            popup(applicationContext, "ADB连接已成功打开。")
+                        }
                     }
                 }
                 super.handleMessage(msg)
@@ -59,13 +69,13 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client__r_m_c)
-        usews.setOnCheckedChangeListener { buttonView, isChecked ->
+        usews.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 useadb.isChecked = false
                 way = 1
             }
         }
-        useadb.setOnCheckedChangeListener { buttonView, isChecked ->
+        useadb.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 usews.isChecked = false
                 way = 2
@@ -73,6 +83,7 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
         }
     }
 
+    @ExperimentalStdlibApi
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.client_connect -> {
@@ -88,11 +99,13 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
                             client_rd.setHandler(mhandler)
                             client_rd.connect()
                         } else {
-//                            val adb = Adb()
-//                            adb.setup(applicationContext,filesDir.toString(),ip,port)
-//                            adb.start()
-                            Toast.makeText(this, "Under developing..", Toast.LENGTH_SHORT).show()
-                            usews.isChecked = true
+                            status = 1
+                            client_connect.text = "断开"
+                            adbd = ADB()
+                            adbd.setup(ip, port, filesDir.toString(), mhandler)
+                            adbd.start()
+//                            Toast.makeText(this, "Under developing..", Toast.LENGTH_SHORT).show()
+//                            usews.isChecked = true
                         }
 
                     }
@@ -100,95 +113,160 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
                     client_connect.text = resources.getString(R.string.connect)
                     editable(server_ip,true)
                     editable(server_port,true)
-                    status = 0
                     if (way == 1) {
-                        client_rd.close()
+                        try {
+                            client_rd.close()
+                            status = 0
+                        } catch (e: Exception) {
+                            popup(this, e.printStackTrace().toString())
+                        }
+                    } else {
+                        try {
+                            adbd.stop()
+                            status = 0
+                        } catch (e: Exception) {
+                            popup(this, e.printStackTrace().toString())
+                        }
+
                     }
 
                 }
             }
             R.id.back -> {
                 if (allow) {
-                    Log.i(tag,"$id,back")
-                    client_rd.send("$id,back")
+                    if (way == 1) {
+                        client_rd.send("$id,back")
+                    } else {
+                        adbd.send(Util().keyevent("back"))
+                    }
+
                 }
             }
             R.id.poweroff -> {
                 if (allow) {
-                    Log.i(tag,"$id,shutdown")
-                    client_rd.send("$id,shutdown")
+                    if (way == 1) {
+                        client_rd.send("$id,shutdown")
+                    } else {
+                        adbd.send(Util().simple_sd + Util().and + Util().su_c + Util().shutdown)
+                    }
                 }
             }
             R.id.reboot -> {
                 if (allow) {
-                    Log.i(tag,"$id,reboot")
-                    client_rd.send("$id,reboot")
+                    if (way == 1) {
+                        client_rd.send("$id,reboot")
+                    } else {
+                        adbd.send(Util().simple_rt + Util().and + Util().su_c + Util().reboot)
+                    }
+
                 }
             }
             R.id.up -> {
                 if (allow) {
-                    Log.i(tag,"$id,up")
-                    client_rd.send("$id,up")
+                    if (way == 1) {
+                        client_rd.send("$id,up")
+                    } else {
+                        adbd.send(Util().keyevent("up"))
+                    }
                 }
             }
             R.id.down -> {
                 if (allow) {
-                    Log.i(tag,"$id,down")
-                    client_rd.send("$id,down")
+                    if (way == 1) {
+                        client_rd.send("$id,down")
+                    } else {
+                        adbd.send(Util().keyevent("down"))
+                    }
+
                 }
             }
             R.id.left -> {
                 if (allow) {
-                    Log.i(tag,"$id,left")
-                    client_rd.send("$id,left")
+                    if (way == 1) {
+                        client_rd.send("$id,left")
+                    } else {
+                        adbd.send(Util().keyevent("left"))
+                    }
+
                 }
             }
             R.id.right -> {
                 if (allow) {
-                    Log.i(tag,"$id,right")
-                    client_rd.send("$id,right")
+                    if (way == 1) {
+                        client_rd.send("$id,right")
+                    } else {
+                        adbd.send(Util().keyevent("right"))
+                    }
+
                 }
             }
             R.id.enter -> {
                 if (allow) {
-                    Log.i(tag,"$id,enter")
-                    client_rd.send("$id,enter")
+                    if (way == 1) {
+                        client_rd.send("$id,enter")
+                    } else {
+                        adbd.send(Util().keyevent("enter"))
+                    }
+
                 }
             }
             R.id.home -> {
                 if (allow) {
-                    Log.i(tag,"$id,home")
-                    client_rd.send("$id,home")
+                    if (way == 1) {
+                        client_rd.send("$id,home")
+                    } else {
+                        adbd.send(Util().keyevent("home"))
+                    }
                 }
             }
             R.id.menu -> {
                 if (allow) {
-                    Log.i(tag,"$id,menu")
-                    client_rd.send("$id,menu")
+                    if (way == 1) {
+                        client_rd.send("$id,menu")
+                    } else {
+                        adbd.send(Util().keyevent("menu"))
+                    }
+
                 }
             }
             R.id.volup -> {
                 if (allow) {
-                    Log.i(tag,"$id,vol+")
-                    client_rd.send("$id,vol+")
+                    if (way == 1) {
+                        client_rd.send("$id,vol+")
+                    } else {
+                        adbd.send(Util().keyevent("vol+"))
+                    }
+
                 }
             }
             R.id.volmi -> {
                 if (allow) {
-                    Log.i(tag,"$id,vol-")
-                    client_rd.send("$id,vol-")
+                    if (way == 1) {
+                        client_rd.send("$id,vol-")
+                    } else {
+                        adbd.send(Util().keyevent("vol-"))
+                    }
+
                 }
             }
             R.id.mute -> {
                 if (allow) {
-                    Log.i(tag,"$id,mute")
-                    client_rd.send("$id,mute")
+                    if (way == 1) {
+                        client_rd.send("$id,mute")
+                    } else {
+                        adbd.send(Util().keyevent("mute"))
+                    }
+
                 }
             }
             R.id.power -> {
                 if (allow) {
-                    Log.i(tag,"$id,power")
-                    client_rd.send("$id,power")
+                    if (way == 1) {
+                        client_rd.send("$id,power")
+                    } else {
+                        adbd.send(Util().keyevent("power"))
+                    }
+
                 }
             }
         }
@@ -208,4 +286,8 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
             v.isClickable = false
         }
     }
+
+fun popup(context: Context, string: String) {
+    Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
+}
 

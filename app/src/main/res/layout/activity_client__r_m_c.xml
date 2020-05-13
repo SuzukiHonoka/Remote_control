@@ -145,7 +145,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="连接方式"
+                    android:text="@string/connect_way"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold" />
 
@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:checked="true"
-                        android:text="Websocket"
+                        android:text="@string/websocket"
                         android:textColor="@color/shojo" />
 
                     <CheckBox
@@ -169,7 +169,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="ADB"
+                        android:text="@string/adb"
                         android:textColor="@color/shojo" />
                 </LinearLayout>
 
@@ -231,7 +231,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="远程控制"
+                    android:text="@string/remote_control"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold" />
 
@@ -245,7 +245,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="POWER"
+                        android:text="@string/power"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -255,7 +255,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="SHUTDOWN"
+                        android:text="@string/shutdown"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -265,7 +265,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="REBOOT"
+                        android:text="@string/reboot"
                         android:textColor="@color/shojo" />
                 </LinearLayout>
 
@@ -280,7 +280,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="onClick"
-                        android:text="HOME"
+                        android:text="@string/home"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -290,7 +290,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="onClick"
-                        android:text="MENU"
+                        android:text="@string/menu"
                         android:textColor="@color/shojo" />
                 </LinearLayout>
 
@@ -307,7 +307,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="UP"
+                        android:text="@string/up"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -318,7 +318,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/up"
                         android:layout_centerHorizontal="true"
-                        android:text="ENTER"
+                        android:text="@string/enter"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -329,7 +329,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/enter"
                         android:layout_centerHorizontal="true"
-                        android:text="DOWN"
+                        android:text="@string/down"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -340,7 +340,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/up"
                         android:layout_toStartOf="@id/enter"
-                        android:text="LEFT"
+                        android:text="@string/left"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -351,18 +351,18 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/up"
                         android:layout_toEndOf="@id/enter"
-                        android:text="RIGHT"
+                        android:text="@string/right"
                         android:textColor="@color/shojo" />
 
                     <Button
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_below="@id/right"
                         android:onClick="onClick"
                         android:id="@+id/back"
                         style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="BACK"
+                        android:text="@string/back"
                         android:textColor="@color/shojo" />
                 </RelativeLayout>
 
@@ -377,7 +377,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="onClick"
-                        android:text="VOL+"
+                        android:text="@string/vol"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -387,7 +387,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="onClick"
-                        android:text="MUTE"
+                        android:text="@string/mute"
                         android:textColor="@color/shojo" />
 
                     <Button
@@ -397,7 +397,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="onClick"
-                        android:text="VOL-"
+                        android:text="@string/volm"
                         android:textColor="@color/shojo" />
                 </LinearLayout>
             </LinearLayout>
@@ -422,25 +422,17 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="日志"
+                    android:text="@string/Logs"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold" />
 
-                <ScrollView
-                    android:layout_marginTop="5dp"
-                    style="@android:style/Widget.Material.ScrollView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fadingEdge="vertical"
-                    android:scrollbars="vertical">
-
                     <TextView
                         android:id="@+id/logs"
+                        android:text="@string/Logs_tip"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="#2196F3" />
-                </ScrollView>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

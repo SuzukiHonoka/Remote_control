@@ -13,4 +13,23 @@
     <string name="warn2">请勿用于非法用途</string>
     <string name="try_connect">尝试连接</string>
     <string name="connect">连接</string>
+    <string name="connect_way">连接方式</string>
+    <string name="websocket">Websocket</string>
+    <string name="adb">ADB</string>
+    <string name="power">POWER</string>
+    <string name="shutdown">SHUTDOWN</string>
+    <string name="reboot">REBOOT</string>
+    <string name="home">HOME</string>
+    <string name="menu">MENU</string>
+    <string name="up">UP</string>
+    <string name="enter">ENTER</string>
+    <string name="down">DOWN</string>
+    <string name="left">LEFT</string>
+    <string name="right">RIGHT</string>
+    <string name="back">BACK</string>
+    <string name="vol">VOL+</string>
+    <string name="mute">MUTE</string>
+    <string name="volm">VOL-</string>
+    <string name="Logs">日志</string>
+    <string name="Logs_tip">Logs will appears here..\n</string>
 </resources>

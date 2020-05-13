@@ -10,8 +10,8 @@ android {
         applicationId "org.starx_software_lab.remote_control"
         minSdkVersion 25
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 101
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

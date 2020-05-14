@@ -32,4 +32,8 @@
     <string name="volm">VOL-</string>
     <string name="Logs">日志</string>
     <string name="Logs_tip">Logs will appears here..\n</string>
+    <string name="check_auto_tip">受控端开机自启</string>
+    <string name="check_quit_all">退出结束所有进程</string>
+    <string name="run_mode">运行模式</string>
+    <string name="choose_mode">选择模式</string>
 </resources>

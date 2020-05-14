@@ -1,5 +1,6 @@
 package org.starx_software_lab.remote_control
 
+import android.content.Context
 import android.os.Handler
 import android.os.Message
 import android.util.Log
@@ -54,6 +55,42 @@ class Util {
 
     private fun mixCMD(keycode: Int): String {
         return this.cmd + keycode.toString()
+    }
+
+    fun setsp(context: Context, section: String, data: String): Boolean {
+        Log.i(tag, "SET Section: $section Value: $data")
+        val sharedPref =
+            context.getSharedPreferences("Setting", Context.MODE_PRIVATE) ?: return false
+        with(sharedPref.edit()) {
+            putString(section, data)
+            apply()
+            return true
+        }
+    }
+
+    fun getsp(context: Context, section: String): String {
+        Log.i(tag, "Get Section: $section")
+        val sharedPref = context.getSharedPreferences("Setting", Context.MODE_PRIVATE) ?: return ""
+        return sharedPref.getString(section, "")!!
+    }
+
+    fun isvalidIP(ip: String): Boolean {
+        val sp = ip.split(".")
+        if (sp.size == 4) {
+            sp.forEach {
+                val si = it.toInt()
+                if ((si > 0) and (si <= 255)) {
+                    return true
+                }
+                return false
+            }
+        }
+        return false
+    }
+
+    fun isvalidPORT(port: String): Boolean {
+        val p = port.toInt()
+        return (p > 0) and (p <= 65535)
     }
 
 }

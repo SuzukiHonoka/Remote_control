@@ -108,16 +108,18 @@ class ADB() {
                     Thread.sleep(5000)
                     if (!success) {
                         adb.close()
-                        adb.connect()
-                        stream = adb.open("shell:")
+                        if (this::stream.isInitialized) {
+                            stream.close()
+                        }
                         Log.i(tag, "Timeout!!")
+                        Util().sendtoUI(Util().connect_adb_closed, "连接/验证超时", this.mhandler)
                     }
                 }
                 adb.connect()
                 stream = adb.open("shell:")
                 Log.i(tag, "ADB open OK")
                 success = true
-                Util().sendtoUI(Util().connect_adb_ok, "", this.mhandler)
+                Util().sendtoUI(Util().connect_adb_ok, null, this.mhandler)
                 Thread {
                     try {
                         while (!stream.isClosed) {
@@ -132,7 +134,7 @@ class ADB() {
                         }
                     } catch (e: Exception) {
                     }
-                    Util().sendtoUI(Util().connect_adb_closed, "", this.mhandler)
+                    Util().sendtoUI(Util().connect_adb_closed, "远端断开", this.mhandler)
                 }.start()
             } catch (e: UnsupportedEncodingException) {
                 e.printStackTrace()
@@ -154,7 +156,7 @@ class ADB() {
     fun stop() {
         Thread {
             adb.close()
-            Util().sendtoUI(Util().connect_adb_closed, "", this.mhandler)
+            Util().sendtoUI(Util().connect_adb_closed, "手动关闭", this.mhandler)
         }.start()
     }
 

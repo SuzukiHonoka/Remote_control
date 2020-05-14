@@ -22,6 +22,12 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
     lateinit var id: String
     lateinit var adbd: ADB
     //
+    lateinit var saved_ip: String
+    lateinit var saved_port: String
+    //
+    var adb_prefer = false
+    var ws_prefer = true
+    //
     private val mhandler =
         object : Handler(Looper.getMainLooper()){
             override fun handleMessage(msg: Message) {
@@ -53,7 +59,8 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
                         logs.append(msg.obj.toString())
                     }
                     Util().connect_adb_closed -> runOnUiThread {
-                        popup(applicationContext, "连接已关闭。")
+                        val s = msg.obj.toString()
+                        popup(applicationContext, "ADB连接已关闭。\n原因: $s")
                     }
                     Util().connect_adb_ok -> {
                         allow = true
@@ -69,6 +76,33 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client__r_m_c)
+        Thread {
+            saved_ip = Util().getsp(this, "IP")
+            saved_port = Util().getsp(this, "PORT")
+            adb_prefer = Util().getsp(this, "ADBP").toBoolean()
+            ws_prefer = Util().getsp(this, "ADBP").toBoolean()
+            if ((!adb_prefer) and (!ws_prefer)) {
+                ws_prefer = true
+            }
+            runOnUiThread {
+                usews.isChecked = ws_prefer
+                useadb.isChecked = adb_prefer
+            }
+
+
+            if (saved_ip.isNotEmpty() and saved_port.isNotEmpty()) {
+                server_ip.setText(saved_ip)
+                server_port.setText(saved_port)
+                runOnUiThread {
+                    popup(this, "数据已读取")
+                }
+
+            } else {
+                runOnUiThread {
+                    popup(this, "数据为空")
+                }
+            }
+        }.start()
         usews.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 useadb.isChecked = false
@@ -91,6 +125,19 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
                     val ip = server_ip.text.toString().trim()
                     val port = server_port.text.toString().trim()
                     if (ip.isNotEmpty() and port.isNotEmpty()) {
+                        if (!Util().isvalidIP(ip) or !Util().isvalidPORT(port)) {
+                            popup(this, "非法IP或端口(目前仅支持IPV4，若有IPV6需求请提交至ISSUES)")
+                            return
+                        }
+                        if (!ip.equals(saved_ip) or !port.equals(saved_port)) {
+                            if (Util().setsp(this, "IP", ip) and Util().setsp(this, "PORT", port)) {
+                                popup(this, "数据保存成功")
+                                saved_ip = ip
+                                saved_port = port
+                            } else {
+                                popup(this, "数据保存失败")
+                            }
+                        }
                         if (way == 1) {
                             status = 1
                             client_connect.text = "断开"
@@ -108,6 +155,8 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
 //                            usews.isChecked = true
                         }
 
+                    } else {
+                        popup(this, "IP及端口不能为空")
                     }
                 } else {
                     client_connect.text = resources.getString(R.string.connect)
@@ -272,10 +321,16 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
         }
     }
 
+    override fun onDestroy() {
+        if (::adbd.isInitialized) {
+            adbd.stop()
+        }
+        super.onDestroy()
+    }
 }
 
 
-    fun editable(v:EditText,b: Boolean) {
+fun editable(v: EditText, b: Boolean) {
         if (b) {
             v.isFocusable = true
             v.isFocusableInTouchMode = true
@@ -290,4 +345,5 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
 fun popup(context: Context, string: String) {
     Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
 }
+
 

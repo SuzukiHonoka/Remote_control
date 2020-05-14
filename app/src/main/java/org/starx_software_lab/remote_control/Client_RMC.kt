@@ -80,7 +80,7 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
             saved_ip = Util().getsp(this, "IP")
             saved_port = Util().getsp(this, "PORT")
             adb_prefer = Util().getsp(this, "ADBP").toBoolean()
-            ws_prefer = Util().getsp(this, "ADBP").toBoolean()
+            ws_prefer = Util().getsp(this, "WSP").toBoolean()
             if ((!adb_prefer) and (!ws_prefer)) {
                 ws_prefer = true
             }
@@ -108,12 +108,14 @@ class Client_RMC : AppCompatActivity(),View.OnClickListener {
                 useadb.isChecked = false
                 way = 1
             }
+            Util().setsp(this, "WSP", isChecked.toString())
         }
         useadb.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 usews.isChecked = false
                 way = 2
             }
+            Util().setsp(this, "ADBP", isChecked.toString())
         }
     }
 
